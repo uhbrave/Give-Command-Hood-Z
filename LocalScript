@@ -1,0 +1,9 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local MessageEvent = ReplicatedStorage:WaitForChild("MessageEvent")
+
+MessageEvent.OnClientEvent:Connect(function(title, message)
+	game:GetService("StarterGui"):SetCore("SendNotification", {
+		Title = title,
+		Text = message,
+	})
+end)
