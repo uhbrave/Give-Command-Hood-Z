@@ -1,0 +1,11 @@
+***How To Setup.***
+> 1 - Make a Script In "ServerScriptService"
+> 1.5 - Make A Script In "StarterPlayerScripts"
+> 2 - Paste The Code Into The Script You've Created (ServerScriptService)
+> 2.5 - Paste The LocalScript Code Into The Script (StarterPlayerScripts)
+> 3 - Change The Whitelist(s) To Your Username/UserId(s)
+> 4 - Test Command/Use Command
+
+**Use The COde In "Main" For ServerScriptService.**
+
+**Use The Code In "LocalScript" For StarterPlayerScripts
