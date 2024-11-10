@@ -1,0 +1,40 @@
+local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local MessageEvent = ReplicatedStorage:WaitForChild("MessageEvent")
+
+local InventoryModule = require(ReplicatedStorage.Inventory)
+
+local Whitelist = {
+	[7341292986] = "uhbrave",
+}
+
+local function IsWhitelisted(id)
+	return Whitelist[id] ~= nil
+end
+
+local function CommandHandle(player, message)
+	local cmd, target, reason = message:match("^(%S+)%s*(%S+)%s*(.*)")
+	if not cmd or not IsWhitelisted(player.UserId) then return end
+
+	if cmd == "?give" then
+		local itemdata = InventoryModule[reason]
+		if itemdata then
+			local targetPlayer = Players:FindFirstChild(target) or Players:GetPlayerByUserId(tonumber(target))
+			if targetPlayer then
+				ReplicatedStorage.MainEvent:FireClient(targetPlayer, "CrateOpening", "Unlock", itemdata)
+				MessageEvent:FireClient(player, "Success", string.format("You gave **%s** to **%s**.", reason, target))
+			else
+				MessageEvent:FireClient(player, "Error", "Target not found.")
+			end
+		else
+			MessageEvent:FireClient(player, "Error", "Item not found.")
+		end
+	end
+end
+
+Players.PlayerAdded:Connect(function(player)
+	player.Chatted:Connect(function(message)
+		CommandHandle(player, message)
+	end)
+end)
